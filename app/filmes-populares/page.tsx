@@ -1,24 +1,12 @@
-import { useState, useEffect } from "react";
-import { Hero } from "../Components/Hero";
-import Movie from "../Components/MovieItem";
-import { Separator } from "../Components/Separator";
-import { MoviesRepository } from "../Repositories/MoviesRepository";
-import { TTMDBApiResponse } from "../Types/TTMDBApiResponse";
+import { Hero } from "@/src/Components/Hero";
+import Movie from "@/src/Components/MovieItem";
+import { Separator } from "@/src/Components/Separator";
+import { MoviesRepository } from "@/src/Repositories/MoviesRepository";
 
 const moviesRepository = new MoviesRepository();
 
-export const TopRatedMovies = () => {
-  const [movies, setMovies] = useState<TTMDBApiResponse>();
-
-  useEffect(() => {
-    const fetchMovies = async () => {
-      const movies = await moviesRepository.getTopRatedMovies();
-
-      setMovies(movies);
-    };
-
-    fetchMovies();
-  }, []);
+export default async function TopRatedMovies() {
+  const movies = await moviesRepository.getTopRatedMovies();
 
   return (
     <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:flex-col lg:min-h-screen">
@@ -39,4 +27,4 @@ export const TopRatedMovies = () => {
       </div>
     </div>
   );
-};
+}

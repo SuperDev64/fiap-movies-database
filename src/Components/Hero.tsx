@@ -1,3 +1,5 @@
+import SearchForm from "./SearchForm";
+
 export const Hero = ({
   showSearch = true,
   title = "Encontre seu próximo filme favorito",
@@ -13,15 +15,7 @@ export const Hero = ({
         {description}
       </p>
 
-      {showSearch && (
-        <div className="flex gap-8 mt-12">
-          <input
-            type="text"
-            className="grow rounded-lg border-gray-200 p-4 pe-12 sm:text-lg/relaxed shadow-sm bg-white"
-            placeholder="Buscar um filme"
-          />
-        </div>
-      )}
+      {showSearch && <SearchForm />}
     </>
   );
 };

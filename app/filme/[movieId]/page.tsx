@@ -1,33 +1,18 @@
-import { useParams } from "react-router";
-import { TMovie } from "../Types/TMovie";
-import { useEffect, useState } from "react";
-import Hero from "../Components/MoviePage/Hero";
-import { MoviesRepository } from "../Repositories/MoviesRepository";
-import Buttons from "../Components/MoviePage/Buttons";
-import Genres from "../Components/MoviePage/Genres";
-import MovieDetails from "../Components/MoviePage/MovieDetails";
+import Hero from "@/src/Components/MoviePage/Hero";
+import Buttons from "@/src/Components/MoviePage/Buttons";
+import Genres from "@/src/Components/MoviePage/Genres";
+import MovieDetails from "@/src/Components/MoviePage/MovieDetails";
+import { MoviesRepository } from "@/src/Repositories/MoviesRepository";
 
-const moviesRepository = new MoviesRepository();
+type PageProps = {
+  params: Promise<{ movieId: string }>;
+};
 
-export const MoviePage = () => {
-  const [movie, setMovie] = useState<TMovie>();
-  const { movieId } = useParams();
+const movieRepository = new MoviesRepository();
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      if (movieId) {
-        const movieData = await moviesRepository.getMovie(movieId);
-
-        setMovie(movieData);
-      }
-    };
-
-    fetchMovies();
-  }, [movieId]);
-
-  if (!movie) {
-    return null;
-  }
+export default async function Page({ params }: PageProps) {
+  const { movieId } = await params;
+  const movie = await movieRepository.getMovie(movieId);
 
   return (
     <div className="min-h-screen">
@@ -72,4 +57,4 @@ export const MoviePage = () => {
       </div>
     </div>
   );
-};
+}

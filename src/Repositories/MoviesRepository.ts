@@ -2,8 +2,8 @@ import { TMovie } from "../Types/TMovie";
 import { TTMDBApiResponse } from "../Types/TTMDBApiResponse";
 
 export class MoviesRepository {
-  private baseUrl = "https://api.themoviedb.org/3/movie";
-  private authToken = import.meta.env.VITE_API_TOKEN ?? "";
+  private baseUrl = "https://api.themoviedb.org/3";
+  private authToken = process.env.TMDB_API_TOKEN ?? "";
 
   async request<T>(url: string, options: RequestInit = {}): Promise<T> {
     const response = await fetch(`${this.baseUrl}${url}`, options);
@@ -27,9 +27,18 @@ export class MoviesRepository {
     } as RequestInit;
   }
 
-  async getMovie(id: string|number) {
+  async getMovie(id: string | number) {
     const movies = await this.request<TMovie>(
-      `/${id}?language=pt-BR`,
+      `/movie/${id}?language=pt-BR`,
+      this.getRequestHeaders()
+    );
+
+    return movies;
+  }
+
+  async searchMovie(query: string) {
+    const movies = await this.request<TTMDBApiResponse>(
+      `/search/movie?query=${query}&language=pt-BR`,
       this.getRequestHeaders()
     );
 
@@ -38,7 +47,7 @@ export class MoviesRepository {
 
   async getFeaturedMovies() {
     const movies = await this.request<TTMDBApiResponse>(
-      `/popular?language=pt-BR`,
+      `/movie/popular?language=pt-BR`,
       this.getRequestHeaders()
     );
 
@@ -47,7 +56,7 @@ export class MoviesRepository {
 
   async getTopRatedMovies() {
     const movies = await this.request<TTMDBApiResponse>(
-      `/top_rated?language=pt-BR`,
+      `/movie/top_rated?language=pt-BR`,
       this.getRequestHeaders()
     );
 
